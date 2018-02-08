@@ -38,6 +38,16 @@ let Cinemas = {
           res.send(cinemas);
         }); 
       });   
+  },
+  getCinemaInfo: (req, res) => {
+    let id_test = "ChIJzycLcBZu5kcRHU7kgLKo29Y";
+    rp('https://maps.googleapis.com/maps/api/place/details/json?place_id='+req.params.id+'&key='+apiKey, (error, response, body) => {
+        console.log(body);  
+        body = JSON.parse(body);
+        }).then((result) => {
+          result = JSON.parse(result);
+          res.send(result.result);
+        }); 
   }
 }
 module.exports = Cinemas;
