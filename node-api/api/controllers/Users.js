@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
+
 let Users = {
     index:(req, res) => {
         User.find({}, (err, users) => {//On recherche tous les utilsateurs de la bdd
@@ -62,17 +63,17 @@ let Users = {
         })
     },
     delete:(req, res) => {
-        User.findById(req.params.id, (err, userToDelete) => {
+        User.findById(req.params.id, (err, userToDelete) => {//On récupère l'utilisateur a supprimer
             if(err) throw err;
-            userToDelete.remove((err) => {
+            userToDelete.remove((err) => {//On supprime l'utilisateur
                 if(err) throw err;
                 console.log('User successfully deleted !');
-                res.send(userToDelete.username+' a été supprimé');
+                res.send(userToDelete);
             })
         });
     },
     getUserInfos:(req, res) => {
-        User.findById(req.params.id, (err, user) => {
+        User.findById(req.params.id, (err, user) => {//On récupère les infos de l'utilisateur que l'on souhaite consulter
             if(err) throw err;
             console.log('User infos printed !');
             console.log(user);
