@@ -61,8 +61,24 @@ let Users = {
 
         })
     },
-    delete:(req, res) => {},
-    getUserInfos:(req, res) => {},
+    delete:(req, res) => {
+        User.findById(req.params.id, (err, userToDelete) => {
+            if(err) throw err;
+            userToDelete.remove((err) => {
+                if(err) throw err;
+                console.log('User successfully deleted !');
+                res.send(userToDelete.username+' a été supprimé');
+            })
+        });
+    },
+    getUserInfos:(req, res) => {
+        User.findById(req.params.id, (err, user) => {
+            if(err) throw err;
+            console.log('User infos printed !');
+            console.log(user);
+            res.send(user);
+        })
+    },
 };
 
 module.exports = Users;
