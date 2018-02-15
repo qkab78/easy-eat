@@ -35,32 +35,47 @@ let Users = {
         });
     },
     update:(req, res) => {
-        let username = req.body.username;
-        let password = req.body.password;
-
+        console.log("---------USER TYPED---------");
+        console.log(req.body);
+        console.log("-------------------------------");
         User.findById(req.params.id, (err, user) => {//On récupère le user grâce à son id
-            if(err) throw err;
-            user.username = username;
-            bcrypt.compare(password, user.password, (err, isMatch) => {//On compare le mdp tapé par le user avec celui de la bdd
-                if(err) throw err;
-                if(isMatch){
+            console.log(user);
+            if(err){
+                throw err;
+                console.log(err);
+            }
+            user.username = req.body.username;
+            bcrypt.compare(req.body.password, user.password, (err, isMatch) => {//On compare le mdp tapé par le user avec celui de la bdd
+                if(user.password == "$2a$10$If.K.ioi42cjx6LTnULIFuUEuADUzkLKutHQm4bznTOZH8QvJTRIW"){
+                    console.log("Bon password")
+                }else{
+                    console.log("Mauvais password")                    
+
+                }
+                if(err){
+                    throw err;
+                    console.log(err);
+                }
+                console.log(isMatch);
+                if(isMatch){                    
                     bcrypt.genSalt(10, (err, salt) => {//On crypte le mdp
                         bcrypt.hash(user.password, salt, (err, hash) => {
                             user.password = hash;
                             user.save((err) => {//On sauvegarde l'utilisateur dans la base de données
-                                if(err)
-                                    throw err;
-                                else
+                                if(!err){
                                     console.log('User successfully updated !');
                                     console.log(user);
-                                    res.send(user);                                    
+                                }else{
+                                    throw err;   
+                                }
                             });
                         });
+                        res.send(user);                                                          
                     });
                 }
             });
 
-        })
+        });
     },
     delete:(req, res) => {
         User.findById(req.params.id, (err, userToDelete) => {//On récupère l'utilisateur a supprimer
@@ -79,7 +94,7 @@ let Users = {
             console.log(user);
             res.send(user);
         })
-    },
+    }
 };
 
 module.exports = Users;

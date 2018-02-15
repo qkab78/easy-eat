@@ -1,8 +1,3 @@
-// Equipe 3 
-/*
-  --Authentification
-  --Mise en place d'une base de données
-*/
 const request = require('request');
 const rp = require('request-promise');
 const apiUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json";
@@ -45,11 +40,10 @@ let Cinemas = {
     const url = 'https://maps.googleapis.com/maps/api/place/details/json';
     let id_test = "ChIJzycLcBZu5kcRHU7kgLKo29Y";
     rp(url+'?place_id='+req.params.id+'&language='+language+'&key='+apiKey, (error, response, body) => {
-        console.log(body);  
         body = JSON.parse(body);
         }).then((result) => {
           result = JSON.parse(result);
-          res.send(result.result[0]);
+          res.send(result.result);
         }); 
   }
 }

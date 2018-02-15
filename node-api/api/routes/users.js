@@ -4,9 +4,10 @@ const users = require('../controllers/Users');
 const auth = require('../controllers/Auth');
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
+const User = require('../models/User');
 
 router.get('/login', (req, res) => {
-    res.send("Connexion")
+    res.send("Page Connexion")
 });
 //CRUD
 router.get('/', users.index);
@@ -21,14 +22,14 @@ passport.use(new LocalStrategy((username, password, done) => {
     User.getUserByUsername(username, (err, user) => {
         if (err) throw err;
         if(!user){
-            return done(null, false, {message:'Utilisateur inconnu'});
+            return done(null, false);
         }
         User.comparePassword(password, user.password, function (err, isMatch) {
             if (err) throw err;
             if (isMatch){
                 return done(null, user);
             }else{
-                return done(null, false, {message:'Mot de passe invalide'})
+                return done(null, false)
             }
         });
     });
@@ -51,7 +52,6 @@ router.post('/login', passport.authenticate('local', {successRedirect:'/', failu
 /* DELETE déconnexion d'un nouvel utilisateur */
 router.get('/logout', auth.ensureAuthenticated, (req, res) => {
     req.logout();
-    req.flash('success_msg', 'Déconnecté !');
     res.redirect('/users/login');
 });
 module.exports = router;

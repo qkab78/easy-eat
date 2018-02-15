@@ -1,6 +1,8 @@
 const express = require('express');
+const session = require('express-session');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const passport = require('passport');
 const port = 3000;
 
 //Routes
@@ -10,8 +12,12 @@ const users = require('./api/routes/users');
 
 app = express();
 
+app.use(session({ secret: "cats" }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 //Utilisation des routes
 app.use('/', index);
@@ -27,3 +33,4 @@ mongoose.connect('mongodb://localhost/easyeat', (err) => {
     if(err) throw err;
 });
 module.exports = app;
+// Equipe 3
