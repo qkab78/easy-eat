@@ -35,9 +35,6 @@ let Users = {
         });
     },
     update:(req, res) => {
-        console.log("---------USER TYPED---------");
-        console.log(req.body);
-        console.log("-------------------------------");
         User.findById(req.params.id, (err, user) => {//On récupère le user grâce à son id
             console.log(user);
             if(err){
@@ -46,12 +43,6 @@ let Users = {
             }
             user.username = req.body.username;
             bcrypt.compare(req.body.password, user.password, (err, isMatch) => {//On compare le mdp tapé par le user avec celui de la bdd
-                if(user.password == "$2a$10$If.K.ioi42cjx6LTnULIFuUEuADUzkLKutHQm4bznTOZH8QvJTRIW"){
-                    console.log("Bon password")
-                }else{
-                    console.log("Mauvais password")                    
-
-                }
                 if(err){
                     throw err;
                     console.log(err);

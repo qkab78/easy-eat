@@ -12,7 +12,12 @@ const users = require('./api/routes/users');
 
 app = express();
 
-app.use(session({ secret: "cats" }));
+app.use(session({
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false, httpOnly:true }
+}));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
